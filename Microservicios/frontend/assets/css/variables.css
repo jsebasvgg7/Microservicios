@@ -1,40 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&display=swap');
+
 :root {
-    --bg: #f5f0e8;
-    --bg-surface: #ece7de;
-    --bg-card: #faf7f2;
+    /* Paleta */
+    --bg: #f4f5f7;
+    --bg-card: #ffffff;
     --bg-elevated: #ffffff;
+    --bg-subtle: #eef0f3;
 
-    --ink: #0e0d0b;
-    --ink-secondary: #2e2c28;
-    --ink-muted: #7a7670;
+    --ink: #111827;
+    --ink-secondary: #374151;
+    --ink-muted: #6b7280;
+    --ink-ghost: #9ca3af;
 
-    --accent: #ff3d00;
-    --accent-light: #ff6b3d;
-    --accent-dim: rgba(255, 61, 0, 0.10);
+    --primary: #1d4ed8;
+    --primary-dim: #dbeafe;
+    --primary-text: #1e40af;
 
-    --yellow: #f5c400;
-    --yellow-dim: rgba(245, 196, 0, 0.18);
+    --border: #e5e7eb;
+    --border-mid: #d1d5db;
+    --border-strong: #9ca3af;
 
-    --border: #0e0d0b;
-    --border-light: #c8c3ba;
+    --success: #059669;
+    --success-bg: #d1fae5;
+    --error: #dc2626;
+    --error-bg: #fee2e2;
+    --warning: #d97706;
+    --warning-bg: #fef3c7;
+    --info: #0284c7;
+    --info-bg: #e0f2fe;
 
-    --success: #1a7a45;
-    --error: #c0392b;
-    --info: #1a4e8c;
-    --warning: #c07800;
+    /* Sombras suaves */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
 
-    --shadow-sm: 3px 3px 0 #0e0d0b;
-    --shadow-md: 5px 5px 0 #0e0d0b;
-    --shadow-lg: 8px 8px 0 #0e0d0b;
-    --shadow-hover: 2px 2px 0 #0e0d0b;
+    /* Tipografía */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', 'Courier New', monospace;
 
-    --border-w: 2px;
-    --radius: 0px;
-    --radius-lg: 0px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
 
-    --font-display: 'Bebas Neue', 'Anton', sans-serif;
-    --font-body: 'Space Grotesk', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-
-    --transition: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: 150ms ease;
+    --transition-md: 250ms ease;
 }

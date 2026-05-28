@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Personas · PersonaMS</title>
+  <title>Registro de Personas — Sistema de Gestión</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/variables.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
@@ -18,19 +18,27 @@
 <body>
   <div class="app-wrapper">
 
-    <div class="stripe"></div>
-
     <header class="navbar">
       <div class="container">
         <div class="navbar-inner">
           <a href="/" class="brand">
-            <span class="brand-dot"></span>
-            PersonaMS
-            <span class="brand-tag">v1.0</span>
+            <span class="brand-logo">
+              <svg viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+            <span class="brand-name">SisGest</span>
+            <span class="brand-sep"></span>
+            <span class="brand-module">Registro de Personas</span>
           </a>
-          <div class="navbar-status">
-            <span class="status-indicator"></span>
-            <span id="api-status">localhost:8080</span>
+          <div class="navbar-right">
+            <div class="api-status">
+              <span class="status-dot"></span>
+              <span id="api-status">localhost:8080</span>
+            </div>
           </div>
         </div>
       </div>
@@ -40,16 +48,26 @@
       <div class="container">
 
         <div class="page-header">
-          <div>
-            <h1 class="page-title">Personas<span>.</span></h1>
-            <p class="page-subtitle">CRUD · Java Spring Boot Microservice · Grupo 2</p>
+          <div class="page-heading">
+            <div class="page-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <div>
+              <h1 class="page-title">Personas registradas</h1>
+              <p class="page-subtitle">Consulta, registra y administra los datos de contacto</p>
+            </div>
           </div>
           <button class="btn-primary" id="btn-nueva-persona">
             <svg viewBox="0 0 24 24" fill="none">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            <span>Nueva Persona</span>
+            <span>Nueva persona</span>
           </button>
         </div>
 
@@ -60,20 +78,20 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input type="search" id="search-input" class="search-input"
-              placeholder="Buscar por nombre, correo, teléfono…" autocomplete="off" />
+              placeholder="Buscar por nombre, correo, teléfono o dirección…" autocomplete="off" />
           </div>
-          <span class="counter-badge"><strong id="total-counter">0</strong>&nbsp;registros</span>
+          <span class="counter-badge"><strong id="total-counter">0</strong> registros</span>
         </div>
 
         <div class="table-wrapper">
           <table class="data-table">
             <thead>
               <tr>
-                <th>#ID</th>
+                <th>#</th>
                 <th>Nombre</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
-                <th>Correo</th>
+                <th>Correo electrónico</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -82,7 +100,7 @@
 
           <div id="loading-state" class="state-box hidden">
             <div class="spinner"></div>
-            <p>Conectando con el microservicio…</p>
+            <p>Conectando con el servicio…</p>
           </div>
 
           <div id="empty-state" class="state-box hidden">
@@ -92,18 +110,20 @@
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            <p>Sin registros aún. Haz clic en <strong>Nueva Persona</strong> para comenzar.</p>
+            <p>No hay personas registradas. Use el botón <strong>Nueva persona</strong> para agregar el primer registro.
+            </p>
           </div>
         </div>
 
       </div>
     </main>
 
+    <!-- Modal -->
     <div class="modal-backdrop" id="modal">
       <div class="modal-overlay" id="modal-overlay"></div>
       <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-header">
-          <h2 class="modal-title" id="modal-title">Nueva Persona</h2>
+          <h2 class="modal-title" id="modal-title">Nueva persona</h2>
           <button class="btn-close" id="btn-cerrar-modal" aria-label="Cerrar">
             <svg viewBox="0 0 24 24" fill="none">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -114,7 +134,7 @@
         <form id="persona-form" novalidate>
           <div class="form-grid">
             <div class="field">
-              <label for="nombre">Nombre</label>
+              <label for="nombre">Nombre completo</label>
               <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana García" autocomplete="off" />
               <span class="field-error hidden" id="error-nombre"></span>
             </div>
@@ -130,7 +150,7 @@
               <span class="field-error hidden" id="error-telefono"></span>
             </div>
             <div class="field">
-              <label for="correo">Correo</label>
+              <label for="correo">Correo electrónico</label>
               <input type="email" id="correo" name="correo" placeholder="Ej. ana@correo.com" autocomplete="off" />
               <span class="field-error hidden" id="error-correo"></span>
             </div>
@@ -148,15 +168,21 @@
       </div>
     </div>
 
+    <!-- Toast -->
     <div class="toast" id="toast" role="alert">
+      <span class="toast-indicator"></span>
       <span id="toast-message"></span>
     </div>
 
     <footer class="footer">
       <div class="container">
         <div class="footer-inner">
-          <span>PersonaMS &copy; 2025 &mdash; Grupo 1 &amp; 2</span>
-          <span class="footer-api">GET · POST · PUT · DELETE /api/personas</span>
+          <span>Sistema de Gestión de Personas</span>
+          <div class="footer-right">
+            <span class="footer-tag">Spring Boot</span>
+            <span class="footer-tag">REST API</span>
+            <span class="footer-tag">GET · POST · PUT · DELETE</span>
+          </div>
         </div>
       </div>
     </footer>
