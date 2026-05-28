@@ -1,0 +1,34 @@
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="personas-tbody">
+            <!-- Filas generadas por ui.renderTable(personas) en ui.js -->
+        </tbody>
+    </table>
+
+    <!-- Estado: cargando -->
+    <div id="loading-state" class="state-box hidden">
+        <div class="spinner"></div>
+        <p>Conectando con el microservicio…</p>
+    </div>
+
+    <!-- Estado: sin datos -->
+    <div id="empty-state" class="state-box hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <p>Aún no hay personas registradas.<br />Haz clic en <strong>Nueva Persona</strong> para comenzar.</p>
+    </div>
+</div>

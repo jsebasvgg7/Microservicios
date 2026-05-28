@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Persona · PersonaMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/variables.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+
+<body>
+    <div class="app-wrapper">
+
+        <div class="stripe"></div>
+
+        <header class="navbar">
+            <div class="container">
+                <div class="navbar-inner">
+                    <a href="../index.html" class="brand">
+                        <span class="brand-dot"></span>
+                        PersonaMS
+                        <span class="brand-tag">v1.0</span>
+                    </a>
+                    <div class="navbar-status">
+                        <span class="status-indicator"></span>
+                        <span>localhost:8080</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="standalone-card">
+
+                    <a href="../index.html" class="back-link">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                        Volver al listado
+                    </a>
+
+                    <div class="modal-header">
+                        <h1 class="modal-title">Editar Persona</h1>
+                        <span class="id-badge" id="id-badge">id: —</span>
+                    </div>
+
+                    <form id="persona-form" novalidate>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana García"
+                                    autocomplete="off" />
+                                <span class="field-error hidden" id="error-nombre"></span>
+                            </div>
+                            <div class="field">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" id="direccion" name="direccion"
+                                    placeholder="Ej. Calle 10 # 5-20, Bogotá" autocomplete="off" />
+                                <span class="field-error hidden" id="error-direccion"></span>
+                            </div>
+                            <div class="field">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 310 000 0000"
+                                    autocomplete="off" />
+                                <span class="field-error hidden" id="error-telefono"></span>
+                            </div>
+                            <div class="field">
+                                <label for="correo">Correo</label>
+                                <input type="email" id="correo" name="correo" placeholder="Ej. ana@correo.com"
+                                    autocomplete="off" />
+                                <span class="field-error hidden" id="error-correo"></span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="../index.html" class="btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn-primary">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <span>Actualizar</span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </main>
+
+        <div class="toast" id="toast" role="alert"><span id="toast-message"></span></div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <span>PersonaMS &copy; 2025</span>
+                    <span class="footer-api">PUT /api/personas/:id</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <script type="module">
+        import personaService from "../services/personaService.js";
+        import { validateForm } from "../assets/js/validations.js";
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        function toast(msg, type = "success") {
+            const t = document.getElementById("toast");
+            const tm = document.getElementById("toast-message");
+            tm.textContent = msg;
+            t.className = `toast toast-${type} show`;
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove("show"), 3200);
+        }
+
+        async function init() {
+            if (!id) { toast("No se especificó un ID.", "error"); return; }
+            document.getElementById("id-badge").textContent = `id: ${id}`;
+            try {
+                const persona = await personaService.buscarPorId(id);
+                if (!persona) { toast("Persona no encontrada.", "error"); return; }
+                const f = document.getElementById("persona-form");
+                f.nombre.value = persona.nombre || "";
+                f.direccion.value = persona.direccion || "";
+                f.telefono.value = persona.telefono || "";
+                f.correo.value = persona.correo || "";
+            } catch (err) {
+                toast("Error al cargar la persona.", "error");
+                console.error(err);
+            }
+        }
+
+        document.getElementById("persona-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const f = e.target;
+            const data = { nombre: f.nombre.value, direccion: f.direccion.value, telefono: f.telefono.value, correo: f.correo.value };
+
+            document.querySelectorAll(".field-error").forEach(el => { el.textContent = ""; el.classList.add("hidden"); });
+            document.querySelectorAll(".input-error").forEach(el => el.classList.remove("input-error"));
+
+            const { valid, errors } = validateForm(data);
+            if (!valid) {
+                for (const [field, msg] of Object.entries(errors)) {
+                    const el = document.getElementById(`error-${field}`);
+                    const input = document.querySelector(`[name="${field}"]`);
+                    if (el) { el.textContent = msg; el.classList.remove("hidden"); }
+                    if (input) input.classList.add("input-error");
+                }
+                return;
+            }
+            try {
+                await personaService.actualizar(id, data);
+                toast("✓ Persona actualizada.", "success");
+                setTimeout(() => { window.location.href = "../index.html"; }, 1200);
+            } catch (err) {
+                toast("Error al actualizar.", "error");
+                console.error(err);
+            }
+        });
+
+        init();
+    </script>
+</body>
+
+</html>
