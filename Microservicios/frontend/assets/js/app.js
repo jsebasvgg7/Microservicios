@@ -102,11 +102,13 @@ function init() {
     });
 
     document.getElementById("btn-cerrar-modal")?.addEventListener("click", () => ui.closeModal());
+    document.getElementById("btn-cancelar")?.addEventListener("click", () => ui.closeModal());
     document.getElementById("modal-overlay")?.addEventListener("click", () => ui.closeModal());
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") ui.closeModal();
     });
+
     document.getElementById("persona-form")?.addEventListener("submit", handleFormSubmit);
 
     document.getElementById("personas-tbody")?.addEventListener("click", handleTableClick);

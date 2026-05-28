@@ -1,4 +1,4 @@
-import ENV from "../config/environment.js";
+import ENV from "../../config/environment.js";
 
 const BASE = ENV.BASE_URL;
 

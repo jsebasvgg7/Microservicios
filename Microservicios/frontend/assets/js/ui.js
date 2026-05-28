@@ -1,31 +1,31 @@
 export const ui = {
-    tableBody: () => document.getElementById("personas-tbody"),
-    modal: () => document.getElementById("modal"),
-    modalTitle: () => document.getElementById("modal-title"),
-    form: () => document.getElementById("persona-form"),
-    toast: () => document.getElementById("toast"),
-    toastMsg: () => document.getElementById("toast-message"),
-    counter: () => document.getElementById("total-counter"),
-    searchInput: () => document.getElementById("search-input"),
-    emptyState: () => document.getElementById("empty-state"),
-    loadingState: () => document.getElementById("loading-state"),
+  tableBody: () => document.getElementById("personas-tbody"),
+  modal: () => document.getElementById("modal"),
+  modalTitle: () => document.getElementById("modal-title"),
+  form: () => document.getElementById("persona-form"),
+  toastEl: () => document.getElementById("toast"),
+  toastMsgEl: () => document.getElementById("toast-message"),
+  counter: () => document.getElementById("total-counter"),
+  searchInput: () => document.getElementById("search-input"),
+  emptyState: () => document.getElementById("empty-state"),
+  loadingState: () => document.getElementById("loading-state"),
 
-    // ── Tabla ────────────────────────────────────────────────────
-    renderTable(personas) {
-        const tbody = this.tableBody();
-        const empty = this.emptyState();
-        const counter = this.counter();
+  // ── Tabla ────────────────────────────────────────────────────
+  renderTable(personas) {
+    const tbody = this.tableBody();
+    const empty = this.emptyState();
+    const counter = this.counter();
 
-        if (counter) counter.textContent = personas.length;
+    if (counter) counter.textContent = personas.length;
 
-        if (personas.length === 0) {
-            tbody.innerHTML = "";
-            if (empty) empty.classList.remove("hidden");
-            return;
-        }
-        if (empty) empty.classList.add("hidden");
+    if (personas.length === 0) {
+      tbody.innerHTML = "";
+      if (empty) empty.classList.remove("hidden");
+      return;
+    }
+    if (empty) empty.classList.add("hidden");
 
-        tbody.innerHTML = personas.map((p) => `
+    tbody.innerHTML = personas.map((p) => `
       <tr class="table-row" data-id="${p.id}">
         <td class="td-id">${p.id ?? "—"}</td>
         <td class="td-nombre">
@@ -49,71 +49,71 @@ export const ui = {
         </td>
       </tr>
     `).join("");
-    },
+  },
 
-    openModal(title = "Nueva Persona", persona = null) {
-        this.modalTitle().textContent = title;
-        this.clearErrors();
+  openModal(title = "Nueva Persona", persona = null) {
+    this.modalTitle().textContent = title;
+    this.clearErrors();
 
-        const f = this.form();
-        f.reset();
-        f.dataset.mode = persona ? "edit" : "create";
-        f.dataset.id = persona ? persona.id : "";
+    const f = this.form();
+    f.reset();
+    f.dataset.mode = persona ? "edit" : "create";
+    f.dataset.id = persona ? persona.id : "";
 
-        if (persona) {
-            f.nombre.value = persona.nombre || "";
-            f.direccion.value = persona.direccion || "";
-            f.telefono.value = persona.telefono || "";
-            f.correo.value = persona.correo || "";
-        }
+    if (persona) {
+      f.nombre.value = persona.nombre || "";
+      f.direccion.value = persona.direccion || "";
+      f.telefono.value = persona.telefono || "";
+      f.correo.value = persona.correo || "";
+    }
 
-        this.modal().classList.add("open");
-        setTimeout(() => f.nombre.focus(), 100);
-    },
+    this.modal().classList.add("open");
+    setTimeout(() => f.nombre.focus(), 100);
+  },
 
-    closeModal() {
-        this.modal().classList.remove("open");
-        this.clearErrors();
-    },
+  closeModal() {
+    this.modal().classList.remove("open");
+    this.clearErrors();
+  },
 
-    showErrors(errors) {
-        this.clearErrors();
-        for (const [field, msg] of Object.entries(errors)) {
-            const el = document.getElementById(`error-${field}`);
-            const input = document.querySelector(`[name="${field}"]`);
-            if (el) { el.textContent = msg; el.classList.remove("hidden"); }
-            if (input) input.classList.add("input-error");
-        }
-    },
+  showErrors(errors) {
+    this.clearErrors();
+    for (const [field, msg] of Object.entries(errors)) {
+      const el = document.getElementById(`error-${field}`);
+      const input = document.querySelector(`[name="${field}"]`);
+      if (el) { el.textContent = msg; el.classList.remove("hidden"); }
+      if (input) input.classList.add("input-error");
+    }
+  },
 
-    clearErrors() {
-        document.querySelectorAll(".field-error").forEach((el) => {
-            el.textContent = "";
-            el.classList.add("hidden");
-        });
-        document.querySelectorAll(".input-error").forEach((el) => el.classList.remove("input-error"));
-    },
+  clearErrors() {
+    document.querySelectorAll(".field-error").forEach((el) => {
+      el.textContent = "";
+      el.classList.add("hidden");
+    });
+    document.querySelectorAll(".input-error").forEach((el) => el.classList.remove("input-error"));
+  },
 
-    toast(message, type = "success") {
-        const t = document.getElementById("toast");
-        const tm = document.getElementById("toast-message");
-        if (!t || !tm) return;
+  toast(message, type = "success") {
+    const t = this.toastEl();
+    const tm = this.toastMsgEl();
+    if (!t || !tm) return;
 
-        tm.textContent = message;
-        t.className = `toast toast-${type} show`;
+    tm.textContent = message;
+    t.className = `toast toast-${type} show`;
 
-        clearTimeout(t._timeout);
-        t._timeout = setTimeout(() => t.classList.remove("show"), 3200);
-    },
+    clearTimeout(t._timeout);
+    t._timeout = setTimeout(() => t.classList.remove("show"), 3200);
+  },
 
-    setLoading(active) {
-        const ls = this.loadingState();
-        const tb = this.tableBody();
-        if (active) {
-            if (ls) ls.classList.remove("hidden");
-            if (tb) tb.innerHTML = "";
-        } else {
-            if (ls) ls.classList.add("hidden");
-        }
-    },
+  setLoading(active) {
+    const ls = this.loadingState();
+    const tb = this.tableBody();
+    if (active) {
+      if (ls) ls.classList.remove("hidden");
+      if (tb) tb.innerHTML = "";
+    } else {
+      if (ls) ls.classList.add("hidden");
+    }
+  },
 };
