@@ -659,7 +659,7 @@ Algunas ideas para extender el proyecto:
 
 ## Autores
 
-Desarrollado por **Grupo 1 & 2** — 2025.
+Desarrollado por **Grupo 3 & 4**.
 
 ---
 
