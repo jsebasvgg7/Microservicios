@@ -21,7 +21,6 @@
 13. [Diseño y Estilos](#diseño-y-estilos)
 14. [Páginas Disponibles](#páginas-disponibles)
 15. [Posibles Errores y Soluciones](#posibles-errores-y-soluciones)
-16. [Mejoras Futuras](#mejoras-futuras)
 
 ---
 
@@ -67,25 +66,6 @@ La combinación de ambas capas permite registrar, consultar, editar y eliminar p
 ## Arquitectura del Proyecto
 
 El proyecto sigue un patrón **cliente-servidor desacoplado**:
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   NAVEGADOR WEB                     │
-│                                                     │
-│  index.html  ──►  app.js  ──►  personaService.js   │
-│                               ──►  api.js           │
-│                               ──►  fetch()          │
-└──────────────────────┬──────────────────────────────┘
-                       │  HTTP (JSON)
-                       │  localhost:8080/api/personas
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│              SPRING BOOT (Puerto 8080)              │
-│                                                     │
-│  PersonaController  ──►  PersonaService             │
-│       (REST)              (Lógica + List<>)         │
-└─────────────────────────────────────────────────────┘
-```
 
 El backend **no usa base de datos**. Los datos se guardan en un `ArrayList` en memoria dentro del `PersonaService`. Esto significa que al reiniciar el servidor, los datos se pierden.
 
@@ -328,7 +308,7 @@ public class PersonaService {
 }
 ```
 
-> ⚠️ **Importante:** Como el almacenamiento es en memoria, **todos los datos se pierden al reiniciar el servidor**. Para persistencia real se debería integrar Spring Data JPA con una base de datos como PostgreSQL o H2.
+> **Importante:** Como el almacenamiento es en memoria, **todos los datos se pierden al reiniciar el servidor**. Para persistencia real se debería integrar Spring Data JPA con una base de datos como PostgreSQL o H2.
 
 ---
 
@@ -642,25 +622,7 @@ Y actualiza `BASE_URL` en `frontend/config/environment.js` al nuevo puerto.
 
 ---
 
-## Mejoras Futuras
-
-Algunas ideas para extender el proyecto:
-
-- **Persistencia real**: Integrar Spring Data JPA con H2 (en memoria persistente) o PostgreSQL.
-- **Paginación**: Agregar paginación en el endpoint `GET /personas` para listas grandes.
-- **Búsqueda en backend**: Agregar endpoint `GET /personas/buscar?nombre=camila` para filtrar desde el servidor.
-- **Validaciones en backend**: Agregar `@Valid` y `@NotBlank` con Bean Validation para no depender solo del frontend.
-- **Manejo de errores HTTP**: Retornar `404 Not Found` cuando una persona no existe, en lugar de `null`.
-- **Docker**: Crear un `Dockerfile` para el backend y un `docker-compose.yml` para levantar todo con un solo comando.
-- **Tests unitarios**: Ampliar los tests del servicio con JUnit 5 y Mockito.
-- **Autenticación**: Agregar Spring Security con JWT para proteger los endpoints.
-
----
-
 ## Autores
 
 Desarrollado por **Grupo 3 & 4**.
 
----
-
-*Proyecto académico de introducción a microservicios con Spring Boot y JavaScript modular.*
